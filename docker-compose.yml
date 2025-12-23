@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  mysql:
+    container_name: mysql
+    build: .
+    image: custom-mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: auth_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_pass
+      TZ: Asia/Ho_Chi_Minh
+    ports:
+      - "3322:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+
+  api:
+    build: .
+    container_name: fastapi-auth
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: mysql+pymysql://app_user:app_pass@mysql:3306/auth_db
+    depends_on:
+      - mysql
+    ports:
+      - "8000:8000"
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+volumes:
+  mysql_data:
+
