@@ -29,7 +29,7 @@ Dự án mẫu FastAPI cho đăng ký, đăng nhập, tạo access token/refresh
 - `GET /me`: lấy thông tin user từ access token.
 
 ### Cấu hình DB MySQL
-- Mặc định `DATABASE_URL=mysql+pymysql://app_user:app_pass@10.1.1.6.53:3322/auth_db`
+- Mặc định `DATABASE_URL=mysql+pymysql://app_user:app_pass@mysql:3306/auth_db` (phù hợp docker-compose).
 - Thay đổi qua `.env` nếu cần:
   ```
   DATABASE_URL=mysql+pymysql://user:pass@host:port/dbname
